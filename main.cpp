@@ -1,26 +1,26 @@
 #include <bmplib.cpp>
-#include <string>
 
 using namespace std;
-char image[SIZE][SIZE];
+unsigned char image[SIZE][SIZE];
 
 void loadGreyImage();
 void saveGreyImage();
 
 int main() {
-
+    loadGreyImage();
+    saveGreyImage();
 }
 
 void loadGreyImage() {
-    string s;
-    cin >> s;
-    s += ".bmp";
-    readGSBMP(s, image);
+    char fileName[100];
+    cin >> fileName;
+    strcat(fileName, ".bmp");
+    readGSBMP(fileName, image);
 }
 
 void saveGreyImage() {
-    stirng s;
-    cin >> s;
-    s += ".bmp";
-    writeGSBMP(s, image);
+    char fileName[100];
+    cin >> fileName;
+    strcat(fileName, ".bmp");
+    writeGSBMP(fileName, image);
 }

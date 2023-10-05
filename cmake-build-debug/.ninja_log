@@ -1,0 +1,13 @@
+# ninja log v5
+0	347	7182211472357269	CMakeFiles/Assignment_1___image_filtering.dir/bmplib.cpp.obj	c0e0fc2a51d30b73
+3	385	7182214603978348	CMakeFiles/Assignment_1___image_filtering.dir/main.cpp.obj	9652ef4b15c55725
+1	84	7182218410366402	build.ninja	a63588e74668a511
+1	345	7182218442283157	CMakeFiles/bmplib.cpp.dir/main.cpp.obj	1e2bf81933a98d86
+1	321	7182220155550777	CMakeFiles/bmplib.cpp.dir/main.cpp.obj	1e2bf81933a98d86
+321	406	7182220156378543	bmplib.cpp.exe	71da46d6d20d1684
+2	315	7182221537445341	CMakeFiles/bmplib.cpp.dir/main.cpp.obj	1e2bf81933a98d86
+315	389	7182221538173162	bmplib.cpp.exe	71da46d6d20d1684
+2	301	7182223484913753	CMakeFiles/bmplib.cpp.dir/main.cpp.obj	1e2bf81933a98d86
+302	374	7182223485606204	bmplib.cpp.exe	71da46d6d20d1684
+4	286	7182232826854215	CMakeFiles/bmplib.cpp.dir/main.cpp.obj	1e2bf81933a98d86
+287	358	7182232827542370	bmplib.cpp.exe	71da46d6d20d1684
