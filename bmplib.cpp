@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cstdlib>
 #include "bmplib.h"
-#include "unistd.h"
+#include <unistd.h>
 
 using namespace std;
 using std::cout;

@@ -1,26 +1,43 @@
-#include <bmplib.cpp>
+#include <iostream>
+#include <fstream>
+#include <cstring>
+#include <string>
+#include <cmath>
+#include <unistd.h>
+#include "bmplib.cpp"
+
+using namespace std;
 
 using namespace std;
 unsigned char image[SIZE][SIZE];
 
 void loadGreyImage();
 void saveGreyImage();
+void display();
 
 int main() {
-    loadGreyImage();
-    saveGreyImage();
+    display()
 }
 
+
 void loadGreyImage() {
-    char fileName[100];
+    string fileName;
     cin >> fileName;
-    strcat(fileName, ".bmp");
-    readGSBMP(fileName, image);
+    fileName += ".bmp";
+    char cwd[PATH_MAX];
+    fileName = strcat(getcwd(cwd, sizeof(cwd)), "/imgs/") + fileName;
+    readGSBMP(fileName.c_str(), image);
 }
 
 void saveGreyImage() {
-    char fileName[100];
+    string fileName;
     cin >> fileName;
-    strcat(fileName, ".bmp");
-    writeGSBMP(fileName, image);
+    fileName += ".bmp";
+    char cwd[PATH_MAX];
+    fileName = strcat(getcwd(cwd, sizeof(cwd)), "/imgs/") + fileName;
+    writeGSBMP(fileName.c_str(), image);
+}
+
+void display() {
+    int option = -1;
 }
