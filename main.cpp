@@ -9,24 +9,33 @@
 using namespace std;
 
 using namespace std;
-unsigned char image[SIZE][SIZE];
+unsigned char image[SIZE][SIZE], image2[SIZE][SIZE];
 
-void loadGreyImage();
+void loadGreyImage(unsigned char img[][SIZE]);
 void saveGreyImage();
+void saveGreyImage();
+void showMenu();
 void display();
+
+void FilterGrey1();
+void FilterGrey2();
+void FilterGrey3();
+//void FilterGrey4();
+void FilterGrey5();
+void FilterGrey6();
 
 int main() {
     display();
 }
 
 
-void loadGreyImage() {
+void loadGreyImage(unsigned char img[][SIZE]) {
     string fileName;
     cin >> fileName;
     fileName += ".bmp";
     char cwd[PATH_MAX];
-    fileName = strcat(getcwd(cwd, sizeof(cwd)), "/imgs/") + fileName;
-    readGSBMP(fileName.c_str(), image);
+    fileName = strcat(getcwd(cwd, sizeof(cwd)), "/") + fileName;
+    readGSBMP(fileName.c_str(), img);
 }
 
 void saveGreyImage() {
@@ -34,14 +43,147 @@ void saveGreyImage() {
     cin >> fileName;
     fileName += ".bmp";
     char cwd[PATH_MAX];
-    fileName = strcat(getcwd(cwd, sizeof(cwd)), "/imgs/") + fileName;
+    fileName = strcat(getcwd(cwd, sizeof(cwd)), "/") + fileName;
     writeGSBMP(fileName.c_str(), image);
+}
+
+void showGrayImage() {
+    writeGSBMP(".\\tmp\\img.bmp", image);
+    system(".\\tmp\\img.bmp");
 }
 
 void display() {
     cout << "Please enter file name of the image to process:" << endl;
-    loadGreyImage();
+    loadGreyImage(image);
 
+    int option = -1;
+    do {
+        showMenu();
+        cin >> option;
+        switch (option) {
+            case 1:
+                FilterGrey1();
+                break;
+            case 2:
+                FilterGrey2();
+                break;
+            case 3:
+                FilterGrey3();
+                break;
+            case 4:
+//                FilterGrey4();
+                break;
+            case 5:
+                FilterGrey5();
+                break;
+            case 6:
+                FilterGrey6();
+                break;
+            default:
+                break;
+        }
+    } while (option != 0);
+}
+
+void FilterGrey1(){ // Black and White Image
+    for(int i = 0; i < SIZE; ++i) {
+        for(int j = 0; j < SIZE; ++j) {
+            if(image[i][j] <= 127)
+                image[i][j] = 0;
+            else
+                image[i][j] = 255;
+        }
+    }
+
+    showGrayImage();
+}
+
+void FilterGrey2(){ // : Invert Image
+    for(int i = 0; i < SIZE; ++i) {
+        for(int j = 0; j < SIZE; ++j) {
+            image[i][j] = 255 - image[i][j];
+        }
+    }
+
+    showGrayImage();
+}
+
+void FilterGrey3(){ // Merge Images
+    cout << "Please enter name of image file to merge with:" << endl;
+    loadGreyImage(image2);
+
+    for(int i = 0; i < SIZE; ++i) {
+        for(int j = 0; j < SIZE; ++j) {
+            image[i][j] = (image[i][j] + image2[i][j]) / 2;
+        }
+    }
+
+    showGrayImage();
+}
+
+//void FilterGrey4(){ //Flip Image
+//    for(int i=0; i<SIZE; ++i) {
+//        for(int j=0; j<SIZE; ++j) {
+//            int temp = image[x][y];
+//            image[x][y]=image[SIZE-i][j]
+//            matrix[SIZE-i][j]=temp;
+//        }
+//    }
+//
+//    showGrayImage();
+//}
+
+
+
+void FilterGrey5(){ // Darken and Lighten Image
+    cout << "Do you want to (d)arken or (l)ighten?" << endl;
+    char c;
+    cin >> c;
+    while (c != 'd' && c != 'l') {
+        cout << "please enter valid input." << endl;
+        cin >> c;
+    }
+
+    for(int i=0; i<SIZE; ++i) {
+        for(int j=0; j<SIZE; ++j) {
+            // plus for ligher
+            if (c == 'l')
+                image[i][j] = image[i][j] + floor(.5 * image[i][j]);
+            // minus for darker
+            else if (c == 'd')
+                image[i][j] = image[i][j] - floor(.5 * image[i][j]);
+        }
+    }
+
+    showGrayImage();
+}
+
+void FilterGrey6(){ // Rotate Image
+    int matrix2[3][3] = {{0, 0, 0}, {0, 0, 0}, {0, 0 ,0}};
+
+// rotate 90 deg
+
+    for(int i=0; i<SIZE; ++i) {
+        for(int j=0; j<SIZE; ++j) {
+            image[i][j] = matrix2[SIZE - 1 - j][i];
+        }
+    }
+
+// rotate 180 deg
+
+    for(int i=SIZE - 1; i>-1; --i) {
+        for(int j=SIZE - 1; j>-1; --j) {
+            image[i][j] = matrix2[SIZE - i][SIZE - j];
+        }
+    }
+
+// rotate 270 deg
+    //! run both 90 deg then 180 deg
+
+    showGrayImage();
+}
+
+void showMenu() {
     cout << "Please select a filter to apply or 0 to exit:" << endl;
     cout << "1- Black & White Filter" << endl;
     cout << "2- Invert Filter" << endl;
@@ -60,31 +202,4 @@ void display() {
     cout << "f- Skew Image Up" << endl;
     cout << "s- Save the image to a file" << endl;
     cout << "0- Exit" << endl;
-
-    int option = -1;
-    do {
-        cin >> option;
-        switch (option) {
-            case 1:
-                Filter1();
-                break;
-            case 2:
-                Filter2();
-                break;
-            case 3:
-                Filter3();
-                break;
-            case 4:
-                Filter4();
-                break;
-            case 5:
-                Filter5();
-                break;
-            case 6:
-                Filter6();
-                break;
-            default:
-                break;
-        }
-    } while (option != 0);
 }
