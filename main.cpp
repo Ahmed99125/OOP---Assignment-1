@@ -20,7 +20,7 @@ void display();
 void FilterGrey1();
 void FilterGrey2();
 void FilterGrey3();
-//void FilterGrey4();
+void FilterGrey4();
 void FilterGrey5();
 void FilterGrey6();
 
@@ -71,7 +71,7 @@ void display() {
                 FilterGrey3();
                 break;
             case 4:
-//                FilterGrey4();
+                FilterGrey4();
                 break;
             case 5:
                 FilterGrey5();
@@ -121,24 +121,35 @@ void FilterGrey3(){ // Merge Images
     showGrayImage();
 }
 
-//void FilterGrey4(){ //Flip Image
-//    for(int i=0; i<SIZE; ++i) {
-//        for(int j=0; j<SIZE; ++j) {
-//            int temp = image[x][y];
-//            image[x][y]=image[SIZE-i][j]
-//            matrix[SIZE-i][j]=temp;
-//        }
-//    }
-//
-//    showGrayImage();
-//}
+void FilterGrey4(){ //Flip Image
+    cout << "Flip (h)orizontally or (v)ertically ?" << endl;
+    char c; cin >> c;
+    while (c != 'h' && c != 'v') {
+        cout << "please enter valid input." << endl;
+    }
+    if (c == 'h') {
+        for(int i=0; i<SIZE; ++i) {
+            for(int j=0; j<SIZE/2; ++j) {
+                swap(image[i][j], image[i][SIZE-j]);
+            }
+        }
+    }
+    else if (c == 'v') {
+        for(int i=0; i<SIZE/2; ++i) {
+            for(int j=0; j<SIZE; ++j) {
+                swap(image[i][j], image[SIZE-i][j]);
+            }
+        }
+    }
+
+    showGrayImage();
+}
 
 
 
 void FilterGrey5(){ // Darken and Lighten Image
     cout << "Do you want to (d)arken or (l)ighten?" << endl;
-    char c;
-    cin >> c;
+    char c; cin >> c;
     while (c != 'd' && c != 'l') {
         cout << "please enter valid input." << endl;
         cin >> c;
@@ -148,10 +159,10 @@ void FilterGrey5(){ // Darken and Lighten Image
         for(int j=0; j<SIZE; ++j) {
             // plus for ligher
             if (c == 'l')
-                image[i][j] = image[i][j] + floor(.5 * image[i][j]);
+                image[i][j] += (SIZE-image[i][j])/2;
             // minus for darker
             else if (c == 'd')
-                image[i][j] = image[i][j] - floor(.5 * image[i][j]);
+                image[i][j] -= image[i][j]/2;
         }
     }
 
@@ -159,26 +170,49 @@ void FilterGrey5(){ // Darken and Lighten Image
 }
 
 void FilterGrey6(){ // Rotate Image
-    int matrix2[3][3] = {{0, 0, 0}, {0, 0, 0}, {0, 0 ,0}};
-
-// rotate 90 deg
-
-    for(int i=0; i<SIZE; ++i) {
-        for(int j=0; j<SIZE; ++j) {
-            image[i][j] = matrix2[SIZE - 1 - j][i];
-        }
+    cout << "Rotate (90), (180) or (270) degrees?" << endl;
+    int x; cin >> x;
+    while (x != 90 && x != 180 && x != 270) {
+        cout << "please enter valid input." << endl;
     }
 
-// rotate 180 deg
 
-    for(int i=SIZE - 1; i>-1; --i) {
-        for(int j=SIZE - 1; j>-1; --j) {
-            image[i][j] = matrix2[SIZE - i][SIZE - j];
+    auto rotate = []() {
+        unsigned char tmp[SIZE][SIZE];
+
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                tmp[j][SIZE-i] = image[i][j];
+            }
         }
-    }
 
-// rotate 270 deg
-    //! run both 90 deg then 180 deg
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                image[i][j] = tmp[i][j];
+            }
+        }
+    };
+
+    switch (x) {
+        case 90:
+            // rotate 90 deg
+            rotate();
+            break;
+        case 180:
+            // rotate 180 deg
+            for (int i = 0; i < 2; i++) {
+                rotate();
+            }
+            break;
+        case 270:
+            // rotate 270 deg
+            for (int i = 0; i < 3; i++) {
+                rotate();
+            }
+            break;
+        default:
+            break;
+    }
 
     showGrayImage();
 }
