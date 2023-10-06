@@ -23,6 +23,10 @@ void FilterGrey3();
 void FilterGrey4();
 void FilterGrey5();
 void FilterGrey6();
+void FilterGrey7();
+void FilterGreyC();
+
+void blur();
 
 int main() {
     display();
@@ -56,28 +60,34 @@ void display() {
     cout << "Please enter file name of the image to process:" << endl;
     loadGreyImage(image);
 
-    int option = -1;
+    char option = -1;
     do {
         showMenu();
         cin >> option;
         switch (option) {
-            case 1:
+            case '1':
                 FilterGrey1();
                 break;
-            case 2:
+            case '2':
                 FilterGrey2();
                 break;
-            case 3:
+            case '3':
                 FilterGrey3();
                 break;
-            case 4:
+            case '4':
                 FilterGrey4();
                 break;
-            case 5:
+            case '5':
                 FilterGrey5();
                 break;
-            case 6:
+            case '6':
                 FilterGrey6();
+                break;
+            case '7':
+                FilterGrey7();
+                break;
+            case 'c':
+                FilterGreyC();
                 break;
             default:
                 break;
@@ -144,8 +154,6 @@ void FilterGrey4(){ //Flip Image
 
     showGrayImage();
 }
-
-
 
 void FilterGrey5(){ // Darken and Lighten Image
     cout << "Do you want to (d)arken or (l)ighten?" << endl;
@@ -215,6 +223,72 @@ void FilterGrey6(){ // Rotate Image
     }
 
     showGrayImage();
+}
+
+void FilterGrey7() { // Edge Detector
+    unsigned char tmp[SIZE][SIZE];
+
+    // Sobel Edge Detector
+    int multiply[3][3] = {{-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1}};
+
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            int gx = 0, gy = 0;
+            for (int x = -1; x < 2; x++) {
+                for (int y = -1; y < 2; y++) {
+                    if (i+x < 0 || i+x >= SIZE || j+y < 0 || j+y >= SIZE)
+                        continue;
+                    gx += image[i+x][j+y] * multiply[x+1][y+1];
+                    gy += image[i+x][j+y] * multiply[y+1][x+1];
+                }
+            }
+            gx *= gx, gy *= gy;
+            if ((int)(round(sqrt(gx+gy))) > 180)
+                tmp[i][j] = 0;
+            else
+                tmp[i][j] = 255;
+        }
+    }
+
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            image[i][j] = tmp[i][j];
+        }
+    }
+
+    showGrayImage();
+}
+
+void FilterGreyC() { // Blur Image
+    blur();
+
+    showGrayImage();
+}
+
+void blur() {
+    unsigned char tmp[SIZE][SIZE];
+
+    int dx[] = {-1, -1, -1, 0, 0, 0, 1, 1, 1};
+    int dy[] = {-1, 0, 1, -1, 0, 1, -1, 0, 1};
+
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            int avg = 0;
+            for (int k = 0; k < 9; k++) {
+                int x = i+dx[k], y = j+dy[k];
+                if (x < 0 || x >= SIZE || y < 0 || y >= SIZE)
+                    continue;
+                avg += image[x][y];
+            }
+            tmp[i][j] = avg / 9;
+        }
+    }
+
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            image[i][j] = tmp[i][j];
+        }
+    }
 }
 
 void showMenu() {
