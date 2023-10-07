@@ -640,22 +640,24 @@ void FilterGreyE() { // Skew Image
         }
     }
 
-    int ratio = round(1 / cos(x));
-    int space = 256 * tan(x);
-    float shrink =  round(256 / (256-space)), remainder = 0;
+    float ratio = 1 / cos(90-x);
+    float space = abs( atan(x));
+    float shrink = 3, remainder = 0;
 
     for (int i = 0; i < SIZE; i++) {
         int j = 0;
         while (j  < SIZE) {
-            int avg = 0, prev = shrink;
-            for (int k = 0; k < (shrink + remainder); k++) {
+            int avg = 0;
+            for (int k = 0; k < floor(shrink + remainder); k++) {
                 avg += image[i][j+k];
             }
-            tmp[i][(int)(j/shrink)] = avg / (shrink + remainder);
-            j += (shrink + remainder);
-            if (floor(shrink + remainder) > prev)
-                remainder = 0;
-            remainder += shrink - floor(shrink);
+            tmp[i][(int)floor(j/(shrink + remainder))] = avg / (shrink + remainder);
+            j++;
+
+            if (floor(shrink + remainder) > shrink)
+                remainder -= floor(shrink + remainder) - shrink;
+            else
+                remainder += shrink - floor(shrink);
         }
     }
 
