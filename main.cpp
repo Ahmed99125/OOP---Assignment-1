@@ -8,7 +8,6 @@
 
 using namespace std;
 
-using namespace std;
 unsigned char image[SIZE][SIZE], image2[SIZE][SIZE];
 
 int loadGreyImage(unsigned char img[][SIZE]);
@@ -30,6 +29,7 @@ void FilterGreyA();
 void FilterGreyB();
 void FilterGreyC();
 void FilterGreyD();
+void FilterGreyE();
 
 void blur();
 
@@ -109,6 +109,9 @@ void display() {
                 break;
             case 'd':
                 FilterGreyD();
+                break;
+            case 'e':
+                FilterGreyE();
                 break;
             default:
                 break;
@@ -629,6 +632,40 @@ void FilterGreyE() { // Skew Image
     cin >> x;
     x = ((x%360)+360) % 360;
 
+    unsigned char tmp[SIZE][SIZE];
+
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            tmp[i][j] = 255;
+        }
+    }
+
+    int ratio = round(1 / cos(x));
+    int space = 256 * tan(x);
+    float shrink =  round(256 / (256-space)), remainder = 0;
+
+    for (int i = 0; i < SIZE; i++) {
+        int j = 0;
+        while (j  < SIZE) {
+            int avg = 0, prev = shrink;
+            for (int k = 0; k < (shrink + remainder); k++) {
+                avg += image[i][j+k];
+            }
+            tmp[i][(int)(j/shrink)] = avg / (shrink + remainder);
+            j += (shrink + remainder);
+            if (floor(shrink + remainder) > prev)
+                remainder = 0;
+            remainder += shrink - floor(shrink);
+        }
+    }
+
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            image[i][j] = tmp[i][j];
+        }
+    }
+
+    showGrayImage();
 }
 
 void blur() {
