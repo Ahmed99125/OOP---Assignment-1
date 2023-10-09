@@ -8,4 +8,4 @@ include_directories(.)
 add_executable(
         bmplib.cpp
         bmplib.h
-        main.cpp)
+        CS213-2023-20220013-20220309-2022416-A1-Part1.cpp)
