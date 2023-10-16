@@ -13,6 +13,7 @@
 #include <string>
 #include <cmath>
 #include <unistd.h>
+#include <sys/stat.h>
 #include "bmplib.cpp"
 
 using namespace std;
@@ -76,6 +77,10 @@ void saveGreyImage() {
 
 // save the image in a tmp folder and show the image immediatly
 void showGrayImage() {
+    struct stat sb;
+    char *path = "./tmp";
+    if (stat(path, &sb))
+        system("mkdir tmp");
     writeGSBMP(".\\tmp\\img.bmp", image);
     system(".\\tmp\\img.bmp");
 }
@@ -122,6 +127,7 @@ void display() {
                 break;
             case 'b':
                 FilterGreyB();
+                break;
             case 'c':
                 FilterGreyC();
                 break;
@@ -678,7 +684,7 @@ void FilterGreyD() { // Crop Filter
     // take the input from the user
     cout << "Please enter x y l w: " << endl;
     cin >> x >> y >> l >> w;
-    while (x < 0 || x > 256 || y < 0 || y > 256 || l < 0 || l > 256 || w < 0 || w > 256) {
+    while (x < 0 || x > 256 || y < 0 || y > 256 || l < 0 || x+l > 256 || w < 0 || x+w > 256) {
         cout << "Please enter valid input." << endl;
         cin >> x >> y >> l >> w;
     }

@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/at991/Desktop/Assignment 1 - image-filtering
+# Install script for directory: D:/Documents/FCAI/OOP/Assignment 1 - image-filtering
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/at991/Desktop/Assignment 1 - image-filtering/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "D:/Documents/FCAI/OOP/Assignment 1 - image-filtering/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
