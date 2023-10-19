@@ -90,11 +90,19 @@ void display() {
         cout << "Please enter a correct file name." << endl;
     }
 
-    char option = -1;
+    string option = "";
     do {
         showMenu();
-        cin >> option;
-        switch (option) {
+        cin.ignore();
+        getline(cin, option);
+        while (option.size() != 1) {
+            cout << "Please enter valid input." << endl;
+            if (cin.peek() == '\n')
+                cin.ignore();
+            getline(cin, option);
+        }
+
+        switch (option[0]) {
             case '1':
                 FilterGrey1();
                 break;
@@ -147,11 +155,13 @@ void display() {
                 while (!loadGreyImage(image))
                     cout << "Please enter a correct file name." << endl;
                 break;
+            case '0':
+                break;
             default:
                 cout << "Please enter valid input." << endl;
                 break;
         }
-    } while (option != 0);
+    } while (option != "0");
 }
 
 void FilterGrey1()  { // Black and White Image
